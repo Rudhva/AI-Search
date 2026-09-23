@@ -166,7 +166,6 @@
                     <option value="ids">Iterative Deepening Search (IDS)</option>
                     <option value="greedy">Greedy Best-First Search</option>
                     <option value="astar">A* Search</option>
-                    <option value="memory_bounded">Memory-bounded A* Search</option>
                 </select>
             </div>
 
@@ -236,11 +235,6 @@
                 selection: "Selects node with minimum f(n) = g(n) + h(n).",
                 info: "Actual cost g(n) and heuristic estimate h(n)."
             },
-            "memory_bounded": {
-                main: "Performs search within a fixed memory limit, pruning high-cost nodes when capacity is reached.",
-                selection: "Selects best f(n) node within memory limit.",
-                info: "Path cost g(n), heuristic h(n), and memory constraint."
-            }
         };
 
         const map = L.map('map').setView([40.0, -89.0], 7);
@@ -351,7 +345,7 @@
                 });
 
                 const data = await res.json();
-                document.getElementById('statCost').textContent = data.cost !== undefined ? data.cost : '--';
+                document.getElementById('statCost').textContent = data.cost !== undefined ? data.cost + " miles" : '--';
                 document.getElementById('statExpanded').textContent = data.nodes_expanded !== undefined ? 
                     (Array.isArray(data.nodes_expanded) ? data.nodes_expanded.length : data.nodes_expanded) : '--';
 
@@ -360,6 +354,7 @@
                     if (activePath) map.removeLayer(activePath);
                     const latlngs = data.path.map(c => [mapData.locations[c].lat, mapData.locations[c].lon]);
                     activePath = L.polyline(latlngs, { color: '#16a34a', weight: 4 }).addTo(map);
+                    map.fitBounds(activePath.getBounds(), { padding: [40, 40] });
                 } else {
                     document.getElementById('pathDisplay').textContent = data.message || "No path found.";
                 }

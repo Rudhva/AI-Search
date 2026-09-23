@@ -1,6 +1,8 @@
 import os
 import json
 from flask import Flask, render_template, jsonify, request
+from uninformed import bfs, dfs, ucs, ids
+from informed import greedy_best_first_search, a_star_search
 
 app = Flask(__name__)
 
@@ -39,20 +41,55 @@ def get_map():
 
 @app.route("/api/search", methods=["POST"])
 def search():
-    """
-    Search endpoint placeholder for deployment testing.
-    """
     payload = request.get_json() or {}
     start = payload.get("start", "")
     goal = payload.get("goal", "")
-    algorithm = payload.get("algorithm", "")
+    algorithm = (payload.get("algorithm", "") or "").lower().strip()
+
+    map_data = load_map_data()
+    graph = map_data.get("graph", {})
+    locations = map_data.get("locations", {})
+
+    if start not in locations or goal not in locations:
+        return jsonify({
+            "status": "error",
+            "message": f"Invalid start ('{start}') or destination ('{goal}').",
+            "path": [],
+            "cost": 0,
+            "nodes_expanded": 0
+        }), 400
+
+    path, cost, expanded = [], 0.0, 0
+
+    if algorithm in ("bfs",):
+        path, cost, expanded = bfs(graph, start, goal)
+    elif algorithm in ("dfs",):
+        path, cost, expanded = dfs(graph, start, goal)
+    elif algorithm in ("ucs",):
+        path, cost, expanded = ucs(graph, start, goal)
+    elif algorithm in ("ids",):
+        path, cost, expanded = ids(graph, start, goal)
+    elif algorithm in ("greedy",):
+        path, cost, expanded = greedy_best_first_search(graph, start, goal, locations)
+    elif algorithm in ("astar", "a*"):
+        path, cost, expanded = a_star_search(graph, start, goal, locations)
+    else:
+        return jsonify({
+            "status": "error",
+            "message": f"Unsupported algorithm '{algorithm}'",
+            "path": [],
+            "cost": 0,
+            "nodes_expanded": 0
+        }), 400
 
     return jsonify({
-        "status": "ready",
-        "message": f"Deployment server active. Request received for algorithm '{algorithm}' from '{start}' to '{goal}'.",
-        "path": [],
-        "cost": 0,
-        "nodes_expanded": 0
+        "status": "success",
+        "start": start,
+        "goal": goal,
+        "algorithm": algorithm,
+        "path": path,
+        "cost": cost,
+        "nodes_expanded": expanded
     })
 
 

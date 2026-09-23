@@ -116,13 +116,13 @@
       "Chicago, IL": 44.54,
       "Aurora, IL": 22.48,
       "Bolingbrook, IL": 13.11,
-      "Orland Park, IL": 19.69,
+      "Orland Park, IL": 19.7,
       "Kankakee, IL": 35.48,
       "Bloomington, IL": 95.12
     },
     "Rockford, IL": {
       "DeKalb, IL": 45.9,
-      "Elgin, IL": 48.5,
+      "Elgin, IL": 48.26,
       "Peoria, IL": 140.71
     },
     "Springfield, IL": {
@@ -137,8 +137,8 @@
     },
     "Elgin, IL": {
       "Schaumburg, IL": 14.5,
-      "DeKalb, IL": 35.41,
-      "Rockford, IL": 48.5
+      "DeKalb, IL": 35.42,
+      "Rockford, IL": 48.26
     },
     "Waukegan, IL": {
       "Arlington Heights, IL": 30.05,
@@ -196,14 +196,14 @@
     },
     "Orland Park, IL": {
       "Chicago, IL": 26.33,
-      "Joliet, IL": 19.69
+      "Joliet, IL": 19.7
     },
     "Kankakee, IL": {
       "Joliet, IL": 35.48,
       "Champaign, IL": 77.88
     },
     "DeKalb, IL": {
-      "Elgin, IL": 35.41,
+      "Elgin, IL": 35.42,
       "Rockford, IL": 45.9,
       "Aurora, IL": 30.59
     }
