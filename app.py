@@ -44,8 +44,9 @@ def search():
     payload = request.get_json() or {}
     start = payload.get("start", "")
     goal = payload.get("goal", "")
-    algorithm = (payload.get("algorithm", "") or "").lower().strip()
-
+    
+    algorithm = str(payload.get("algorithm", "")).strip().lower()
+    
     map_data = load_map_data()
     graph = map_data.get("graph", {})
     locations = map_data.get("locations", {})
@@ -76,11 +77,11 @@ def search():
     else:
         return jsonify({
             "status": "error",
-            "message": f"Unsupported algorithm '{algorithm}'",
+            "message": f"Unsupported algorithm '{algorithm}'?",
             "path": [],
-            "cost": 0,
-            "nodes_expanded": 0
-        }), 400
+            "cost": -1,
+            "nodes_expanded": -1
+        }), 404
 
     return jsonify({
         "status": "success",
